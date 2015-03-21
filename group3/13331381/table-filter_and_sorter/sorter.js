@@ -18,57 +18,35 @@ function makeAllTablesSortable(tables) {
             }(table, thds[i], i);
         }
 
+        function compare(a, b, thd) {
+            if (thd.className.search("descend") == -1) {
+                return a < b;
+            } else {
+                return a >= b;
+            }
+        }
+
         // sort table by given the table, thead, and column
         function sortTable(table, thd, index) {
             var tbody = table.getElementsByTagName("tbody")[0];
             var trs = tbody.getElementsByTagName("tr");
-            var match = document.getElementsByClassName("match");
-            //alert(match.length);
+            var match = table.getElementsByClassName("match");
 
             for (var i = 0; i < trs.length; i++) {
                 if (match.length <= 0 || trs[i].className.search("match") >= 0) {
                     for (var j = i+1; j < trs.length; j++) {
                         if (match.length <= 0 || trs[j].className.search("match") >= 0) {
-                            if (trs[i].cells[index].innerHTML < trs[j].cells[index].innerHTML) {
+                            if (compare(trs[i].cells[index].innerHTML, trs[j].cells[index].innerHTML, thd)) {
                                 if (match.length > 0) {
                                     var classname = trs[i].className;
                                     trs[i].className = trs[j].className;
                                     trs[j].className = classname;
-                                    //alert(classname);
                                 }
 
                                 var t = trs[i].innerHTML;
                                 trs[i].innerHTML = trs[j].innerHTML;
                                 trs[j].innerHTML = t;
                             }
-                        }
-                    }
-                }
-            }
-
-            // reverse case
-            if (thd.className == "descend") {
-                if (match.length <= 0) {
-                    var l = parseInt(trs.length / 2 + 1);
-                    for (var i = 0; i < l; i++) {
-                        var t = trs[i].innerHTML;
-                        trs[i].innerHTML = trs[trs.length-i-1].innerHTML;
-                        trs[trs.length-i-1].innerHTML = t;
-                    }
-                } else {
-                    var i = 0,
-                        j = trs.length - 1;
-                    while (i < j) {
-                        while (i < j && (trs[i].className.search("match") == -1)) i++;
-                        while (i < j && (trs[j].className.search("match") == -1)) j--;
-                        if (i < j) {
-                            var classname = trs[i].className;
-                            trs[i].className = trs[j].className;
-                            trs[j].className = classname;
-
-                            var t = trs[i].innerHTML;
-                            trs[i++].innerHTML = trs[j].innerHTML;
-                            trs[j--].innerHTML = t;
                         }
                     }
                 }

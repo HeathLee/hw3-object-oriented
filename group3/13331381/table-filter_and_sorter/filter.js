@@ -13,7 +13,7 @@ function makeAllTablesFilterable(tables) {
             return function () {
                 var subText = input.value;
                 if (subText != "") {
-                    clearHighLight();
+                    clearHighLight(table);
                     filterTable(table, subText);
                     changeCss(table, subText);
                 }
@@ -27,9 +27,9 @@ function makeAllTablesFilterable(tables) {
             return input;
         }
 
-        function clearHighLight() {
+        function clearHighLight(table) {
             for (;;) {
-                var highLight = document.getElementsByClassName("highLight");
+                var highLight = table.getElementsByClassName("highLight");
                 if (highLight.length <= 0) break;
                 for (var i = 0; i < highLight.length; i++) {
                     var s = highLight[i].parentNode.innerHTML.replace(/<[^>]+>/g, "");
