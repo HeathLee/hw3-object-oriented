@@ -18,6 +18,7 @@ function makeAllTablesSortable(tables) {
             }(table, thds[i], i);
         }
 
+        // compare function for sorting
         function compare(a, b, thd) {
             if (thd.className.search("descend") == -1) {
                 return a < b;
@@ -30,19 +31,13 @@ function makeAllTablesSortable(tables) {
         function sortTable(table, thd, index) {
             var tbody = table.getElementsByTagName("tbody")[0];
             var trs = tbody.getElementsByTagName("tr");
-            var match = table.getElementsByClassName("match");
+            var match = table.getElementsByClassName("ismatch");
 
-            for (var i = 0; i < trs.length; i++) {
-                if (match.length <= 0 || trs[i].className.search("match") >= 0) {
+            for (var i = 0; i < trs.length - 1; i++) {      // sort algorithm
+                if (match.length <= 0 || trs[i].className.search("ismatch") >= 0) {
                     for (var j = i+1; j < trs.length; j++) {
-                        if (match.length <= 0 || trs[j].className.search("match") >= 0) {
+                        if (match.length <= 0 || trs[j].className.search("ismatch") >= 0) {
                             if (compare(trs[i].cells[index].innerHTML, trs[j].cells[index].innerHTML, thd)) {
-                                if (match.length > 0) {
-                                    var classname = trs[i].className;
-                                    trs[i].className = trs[j].className;
-                                    trs[j].className = classname;
-                                }
-
                                 var t = trs[i].innerHTML;
                                 trs[i].innerHTML = trs[j].innerHTML;
                                 trs[j].innerHTML = t;
@@ -68,4 +63,3 @@ function makeAllTablesSortable(tables) {
         }
     }
 }
-

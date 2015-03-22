@@ -39,3 +39,11 @@ input {
 .highLight {
 	color: red;
 }
+
+.match {
+	display: table-row;
+}
+
+.nomatch {
+	display: none;
+}
