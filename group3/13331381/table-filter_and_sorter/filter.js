@@ -13,7 +13,7 @@ function makeAllTablesFilterable(tables) {
             return function () {
                 var subText = input.value;
                 if (subText != "") {
-                    clearHighLight();
+                    clearHighLight(table);
                     filterTable(table, subText);
                     changeCss(table, subText);
                 }
@@ -22,14 +22,13 @@ function makeAllTablesFilterable(tables) {
 
         function addInputElement(table) {
             var input = document.createElement("input");
-            //input.className = "subText";
             table.parentNode.insertBefore(input, table);
             return input;
         }
 
-        function clearHighLight() {
+        function clearHighLight(table) {
             for (;;) {
-                var highLight = document.getElementsByClassName("highLight");
+                var highLight = table.getElementsByClassName("highLight");
                 if (highLight.length <= 0) break;
                 for (var i = 0; i < highLight.length; i++) {
                     var s = highLight[i].parentNode.innerHTML.replace(/<[^>]+>/g, "");
@@ -48,14 +47,14 @@ function makeAllTablesFilterable(tables) {
                     trs[i].className = "nomatch";
                 } else {
                     // trs[i].style.display = "table-row";
-                    trs[i].className = "match";
+                    trs[i].className = "ismatch";
                 }
             }
         }
 
         function changeCss(table, subText) {
             var tbody = table.getElementsByTagName("tbody")[0];
-            var trs = tbody.getElementsByClassName("match");
+            var trs = tbody.getElementsByClassName("ismatch");
 
             for (var i = 0; i < trs.length; i++) {
                 highLight(trs[i], subText);
@@ -66,7 +65,6 @@ function makeAllTablesFilterable(tables) {
         }
 
         function highLight(tr, subText) {
-            // alert(tr.innerHTML);
             var tds = tr.getElementsByTagName("td");
             for (var i = 0; i < tds.length; i++) {
                 var td = tds[i].innerHTML;
